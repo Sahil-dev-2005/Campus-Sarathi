@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container-fluid vh-100" style="background: linear-gradient(to right, #6a11cb, #2575fc);">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="p-5 rounded shadow-lg" style="background-color: white; width: 350px;">
+            <h1 class="text-center mb-4 text-primary">LOGIN</h1>
+            <form action="/login" method="post">
+                <div class="mb-3">
+                    <label for="userid" class="form-label">User ID</label>
+                    <input type="text" class="form-control" id="userid" name="userid" placeholder="Enter your User ID" required>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
