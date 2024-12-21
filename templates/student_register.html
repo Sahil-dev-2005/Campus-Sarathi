@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container-fluid vh-100" style="background: linear-gradient(to right, #6a11cb, #2575fc);">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="p-5 rounded shadow-lg" style="background-color: white; width: 500px;">
+            <h1 class="text-center mb-4 text-primary">Student Registration</h1>
+            <form action="/student-register" method="post">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="userid" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userid" name="userid" placeholder="Enter User ID" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="branch" class="form-label">Branch</label>
+                        <input type="text" class="form-control" id="branch" name="branch" placeholder="Enter Branch" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="semester" class="form-label">Semester</label>
+                        <input type="number" class="form-control" id="semester" name="semester" placeholder="Enter Semester" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="section" class="form-label">Section</label>
+                        <input type="text" class="form-control" id="section" name="section" placeholder="Enter Section" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -71,6 +71,55 @@ def login():
             return render_template("error.html", error="INVALID CREDENTIALS")
     return render_template("login.html", role=role)
 
+@app.route('/student-register', methods=['GET', 'POST'])
+def student_register():
+    if request.method == 'POST':
+        # Get data from form
+        userid = request.form['userid']
+        name = request.form['name']
+        email = request.form['email']
+        branch = request.form['branch']
+        semester = request.form['semester']
+        section = request.form['section']
+        password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+
+        # Insert data into student table (existing table)
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            INSERT INTO student (userid, name, email, branch, sem, sec, password)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (userid, name, email, branch, semester, section, password))
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect(url_for('login'))  # Redirect to login page after successful registration
+
+    return render_template('student_register.html')
+
+
+@app.route('/admin-register', methods=['GET', 'POST'])
+def admin_register():
+    if request.method == 'POST':
+        # Get data from form
+        userid = request.form['userid']
+        name = request.form['name']
+        email = request.form['email']
+        password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
+
+        # Insert data into admin table (existing table)
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            INSERT INTO admin (userid, name, email, password)
+            VALUES (%s, %s, %s, %s)
+        """, (userid, name, email, password))
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect(url_for('login'))  # Redirect to login page after successful registration
+
+    return render_template('admin_register.html')
+
+
 @app.route('/student_dashboard')
 @login_required
 def student_dashboard():
