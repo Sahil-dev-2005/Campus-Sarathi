@@ -65,6 +65,7 @@ def login():
 
         if result and bcrypt.check_password_hash(result[0], password):
             user = User(userid, role)
+            session['userid'] = userid
             login_user(user)
             return redirect(url_for(f"{role}_dashboard"))  # Redirect to the dashboard based on role
         else:
@@ -239,6 +240,78 @@ def profile():
 
     return redirect(url_for('login'))
 
+@app.route('/join_team', methods=['POST'])
+def join_team():
+    event_id = request.form.get('event_id')
+    cursor = mysql.connection.cursor(dictionary=True) 
+    query = """
+    SELECT s.name, s.branch, s.sem, s.email 
+    FROM team_search t
+    JOIN students s ON t.userid = s.userid
+    WHERE t.event_id = %s
+    """
+    cursor.execute(query, (event_id,))
+    students = cursor.fetchall()
+    cursor.close()
+    return render_template('look_for_team.html', event_id=event_id, students=students)
+
+@app.route('/add_to_team', methods=['POST'])
+def add_to_team():
+    event_id = request.form.get('event_id')
+    userid = session.get('userid')  # Assuming the user ID is stored in the session
+
+    if not userid:
+        return redirect('/login')  # Redirect to login if the user is not logged in
+
+    cursor = mysql.connection.cursor()
+    query = "INSERT IGNORE INTO team_search (event_id, userid) VALUES (%s, %s)"
+    cursor.execute(query, (event_id, userid))
+    mysql.connection.commit()
+    cursor.close()
+
+    return redirect('/student_dashboard')
+
+
+@app.route('/remove_from_team', methods=['POST'])
+def remove_from_team():
+    event_id = request.form.get('event_id')
+    userid = session.get('userid')  # Assuming the user ID is stored in the session
+
+    if not userid:
+        return redirect('/login')  # Redirect to login if the user is not logged in
+
+    cursor = mysql.connection.cursor()
+    query = "DELETE FROM team_search WHERE event_id = %s AND userid = %s"
+    cursor.execute(query, (event_id, userid))
+    mysql.connection.commit()
+    cursor.close()
+
+    return redirect('/student_dashboard')
+
+@app.route('/add-event', methods=['GET', 'POST'])
+def add_event():
+    if request.method == 'POST':
+        event_id = request.form.get('event_id')
+        event_name = request.form.get('event_name')
+        event_date = request.form.get('event_date')
+        participation_mode = request.form.get('participation_mode')
+        coordinator = session.get('userid')  # Assuming the admin's user ID is stored in the session
+
+        if not coordinator:
+            return redirect('/login')  # Redirect to login if the user is not logged in
+
+        cursor = mysql.connection.cursor()
+        query = """
+        INSERT INTO events (event_id, event_name, event_date, participation_mode, coordinator) 
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        cursor.execute(query, (event_id, event_name, event_date, participation_mode, coordinator))
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect('/admin_dashboard')  # Redirect to dashboard after adding the event
+
+    return render_template('add_event.html')
 
 @app.route('/logout')
 @login_required

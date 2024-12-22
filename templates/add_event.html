@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block body %}
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #ca84f5, #f087db);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/admin_dashboard">Admin Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/past-events">Past Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/add-event">Add Event</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/all-complaints">All Complaints</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container mt-5">
+    <h2>Add Event</h2>
+    <form action="/add-event" method="post">
+        <div class="mb-3">
+            <label for="event_id" class="form-label">Event ID</label>
+            <input type="text" class="form-control" id="event_id" name="event_id" required>
+        </div>
+        <div class="mb-3">
+            <label for="event_name" class="form-label">Event Name</label>
+            <input type="text" class="form-control" id="event_name" name="event_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="event_date" class="form-label">Event Date</label>
+            <input type="date" class="form-control" id="event_date" name="event_date" required>
+        </div>
+        <div class="mb-3">
+            <label for="participation_mode" class="form-label">Participation Mode</label>
+            <select class="form-select" id="participation_mode" name="participation_mode" required>
+                <option value="team">Team</option>
+                <option value="alone">Individual</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

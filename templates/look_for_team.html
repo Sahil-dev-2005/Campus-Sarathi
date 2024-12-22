@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #92dfee, #aff3e5);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/student_dashboard">Student Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/past-events">Past Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/view-complaints">View My Complaints</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/profile">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container mt-5">
+    <h1 class="text-center">Event ID: {{ event_id }}</h1>
+    
+    <div class="d-flex justify-content-center my-4">
+        <form action="/add_to_team" method="post" class="me-2">
+            <input type="hidden" name="event_id" value="{{ event_id }}">
+            <button type="submit" class="btn btn-success">Look for Team</button>
+        </form>
+        <form action="/remove_from_team" method="post">
+            <input type="hidden" name="event_id" value="{{ event_id }}">
+            <button type="submit" class="btn btn-danger">Remove Me</button>
+        </form>
+    </div>
+    
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Student Name</th>
+                <th>Branch</th>
+                <th>Semester</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student['name'] }}</td>
+                <td>{{ student['branch'] }}</td>
+                <td>{{ student['sem'] }}</td>
+                <td>{{ student['email'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

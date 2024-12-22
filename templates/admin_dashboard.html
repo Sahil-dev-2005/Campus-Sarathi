@@ -83,7 +83,7 @@
                         <td>{{ event['event_id'] }}</td>
                         <td>{{ event['event_name'] }}</td>
                         <td>{{ event['event_date'] }}</td>
-                        <td>{{ 'Yes' if event['team_required'] else 'No' }}</td>
+                        <td>{{ 'Yes' if event['participation_mode']=='team' else 'No' }}</td>
                         <td>
                             {% if event['unique_code'] %}
                             {{ event['unique_code'] }}

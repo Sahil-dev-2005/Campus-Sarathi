@@ -47,10 +47,14 @@
                         <td>{{ event['event_name'] }}</td>
                         <td>{{ event['event_date'] }}</td>
                         <td>
+                            {% if event['participation_mode'] == 'team' %}
                             <form action="/join_team" method="post">
                                 <input type="hidden" name="event_id" value="{{ event['event_id'] }}">
                                 <button type="submit" class="btn btn-primary">Join Team</button>
                             </form>
+                            {% else %}
+                            INDIVIDUAL
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
