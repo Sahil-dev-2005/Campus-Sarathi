@@ -124,14 +124,52 @@ def admin_register():
 @login_required
 def student_dashboard():
     if current_user.role == 'student':
-        return "Welcome to the Student Dashboard!"
+        cursor = mysql.connection.cursor()
+
+        # Fetch upcoming events
+        cursor.execute("SELECT * FROM events")
+        events = cursor.fetchall()
+
+        # Fetch student's complaints
+        cursor.execute("SELECT * FROM complaints WHERE student_id = %s", (current_user.id,))
+        complaints = cursor.fetchall()
+
+        # Fetch attendance records
+        cursor.execute("SELECT * FROM attendance WHERE student_id = %s", (current_user.id,))
+        attendance = cursor.fetchall()
+
+        cursor.close()
+
+        return render_template(
+            'student_dashboard.html',
+            events=events,
+            complaints=complaints,
+            attendance=attendance
+        )
     return redirect(url_for('login'))
+
 
 @app.route('/admin_dashboard')
 @login_required
 def admin_dashboard():
     if current_user.role == 'admin':
-        return "Welcome to the Admin Dashboard!"
+        cursor = mysql.connection.cursor()
+
+        # Fetch all complaints
+        cursor.execute("SELECT * FROM complaints")
+        complaints = cursor.fetchall()
+
+        # Fetch all events
+        cursor.execute("SELECT * FROM events")
+        events = cursor.fetchall()
+
+        cursor.close()
+
+        return render_template(
+            'admin_dashboard.html',
+            complaints=complaints,
+            events=events
+        )
     return redirect(url_for('login'))
 
 @app.route('/logout')

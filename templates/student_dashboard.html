@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container-fluid vh-100" style="background: linear-gradient(to right, #43cea2, #185a9d); min-height: 100vh;">
+    <div class="py-4">
+        <h1 class="text-center text-white">Student Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <!-- Event Section -->
+        <div class="mb-5">
+            <h3 class="text-center mb-3">Upcoming Events</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td>{{ event['event_id'] }}</td>
+                        <td>{{ event['event_name'] }}</td>
+                        <td>{{ event['event_date'] }}</td>
+                        <td>
+                            <form action="/join_team" method="post">
+                                <input type="hidden" name="event_id" value="{{ event['event_id'] }}">
+                                <button type="submit" class="btn btn-primary">Join Team</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Complaint Section -->
+        <div class="mb-5">
+            <h3 class="text-center mb-3">Submit a Complaint</h3>
+            <form action="/submit_complaint" method="post">
+                <div class="mb-3">
+                    <label for="description" class="form-label">Complaint Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger">Submit Complaint</button>
+            </form>
+        </div>
+
+        <!-- Attendance Section -->
+        <div>
+            <h3 class="text-center mb-3">Attendance Records</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Attendance Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance %}
+                    <tr>
+                        <td>{{ record['event_id'] }}</td>
+                        <td>{{ record['event_name'] }}</td>
+                        <td>{{ 'Present' if record['attendance_status'] else 'Absent' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

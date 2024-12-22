@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container-fluid vh-100" style="background: linear-gradient(to right, #f7b733, #fc4a1a);">
+    <div class="py-4">
+        <h1 class="text-center text-white">Admin Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <!-- Complaints Section -->
+        <div class="mb-5">
+            <h3 class="text-center mb-3">Complaints</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Complaint ID</th>
+                        <th>Student ID</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint['complaint_id'] }}</td>
+                        <td>{{ complaint['student_id'] }}</td>
+                        <td>{{ complaint['description'] }}</td>
+                        <td>{{ complaint['status'] }}</td>
+                        <td>
+                            {% if complaint['status'] == 'Pending' %}
+                            <form action="/resolve_complaint" method="post">
+                                <input type="hidden" name="complaint_id" value="{{ complaint['complaint_id'] }}">
+                                <button type="submit" class="btn btn-success">Mark as Resolved</button>
+                            </form>
+                            {% else %}
+                            <span class="text-success">Resolved</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Events Section -->
+        <div>
+            <h3 class="text-center mb-3">Events</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Team Required</th>
+                        <th>Unique Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td>{{ event['event_id'] }}</td>
+                        <td>{{ event['event_name'] }}</td>
+                        <td>{{ event['event_date'] }}</td>
+                        <td>{{ 'Yes' if event['team_required'] else 'No' }}</td>
+                        <td>
+                            {% if event['unique_code'] %}
+                            {{ event['unique_code'] }}
+                            {% else %}
+                            <form action="/generate_code" method="post">
+                                <input type="hidden" name="event_id" value="{{ event['event_id'] }}">
+                                <button type="submit" class="btn btn-primary">Generate Code</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
