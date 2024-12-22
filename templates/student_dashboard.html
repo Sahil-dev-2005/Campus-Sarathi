@@ -1,14 +1,35 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container-fluid vh-100" style="background: linear-gradient(to right, #43cea2, #185a9d); min-height: 100vh;">
-    <div class="py-4">
-        <h1 class="text-center text-white">Student Dashboard</h1>
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #92dfee, #aff3e5);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Student Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/past-events">Past Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/view-complaints">View My Complaints</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/profile">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
+</nav>
+<br>
+<div class="container-fluid vh-100">
     <div class="container">
         <!-- Event Section -->
-        <div class="mb-5">
+        <div class="mb-5" style="border: 2px solid rgb(50, 7, 207); border-radius: 3px; padding: 15px;">
             <h3 class="text-center mb-3">Upcoming Events</h3>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -38,7 +59,7 @@
         </div>
 
         <!-- Complaint Section -->
-        <div class="mb-5">
+        <div class="mb-5" style="border: 2px solid rgb(201, 201, 14); border-radius: 3px; padding: 15px;">
             <h3 class="text-center mb-3">Submit a Complaint</h3>
             <form action="/submit_complaint" method="post">
                 <div class="mb-3">
@@ -50,7 +71,7 @@
         </div>
 
         <!-- Attendance Section -->
-        <div>
+        <div style="border: 2px solid rgb(80, 227, 85); border-radius: 3px; padding: 15px;">
             <h3 class="text-center mb-3">Attendance Records</h3>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">

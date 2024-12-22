@@ -1,14 +1,32 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="container-fluid vh-100" style="background: linear-gradient(to right, #f7b733, #fc4a1a);">
-    <div class="py-4">
-        <h1 class="text-center text-white">Admin Dashboard</h1>
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #ca84f5, #f087db);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/past-events">Past Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/manage-complaints">Manage Complaints</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
     </div>
-
+</nav>
+<br>
+<div class="container-fluid vh-100">
     <div class="container">
         <!-- Complaints Section -->
-        <div class="mb-5">
+        <div class="mb-5" style="border: 2px solid rgb(201, 201, 14); border-radius: 3px; padding: 15px;">
             <h3 class="text-center mb-3">Complaints</h3>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -44,7 +62,7 @@
         </div>
 
         <!-- Events Section -->
-        <div>
+        <div style="border: 2px solid rgb(50, 7, 207); border-radius: 3px; padding: 15px;">
             <h3 class="text-center mb-3">Events</h3>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
