@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg" style="background: linear-gradient(to right, #92dfee, #aff3e5);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/student_dashboard">Student Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/past-events">Past Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/view-complaints">View My Complaints</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-warning" href="/profile">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br>
+<div class="container mt-4">
+    <h2 class="mb-4">Student Profile</h2>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ student['name'] }}</h4>
+            <p class="card-text"><strong>User ID:</strong> {{ student['userid'] }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ student['email'] }}</p>
+            <p class="card-text"><strong>Branch:</strong> {{ student['branch'] }}</p>
+            <p class="card-text"><strong>Semester:</strong> {{ student['sem'] }}</p>
+            <p class="card-text"><strong>Section:</strong> {{ student['sec'] }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

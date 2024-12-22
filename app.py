@@ -127,12 +127,12 @@ def student_dashboard():
         cursor = mysql.connection.cursor()
 
         # Fetch upcoming events
-        cursor.execute("SELECT * FROM events")
+        cursor.execute("SELECT * FROM events WHERE event_date >= CURDATE()")
         events = cursor.fetchall()
 
         # Fetch student's complaints
-        cursor.execute("SELECT * FROM complaints WHERE student_id = %s", (current_user.id,))
-        complaints = cursor.fetchall()
+        #cursor.execute("SELECT * FROM complaints WHERE student_id = %s", (current_user.id,))
+        #complaints = cursor.fetchall()
 
         # Fetch attendance records
         cursor.execute("SELECT * FROM attendance WHERE student_id = %s", (current_user.id,))
@@ -143,7 +143,6 @@ def student_dashboard():
         return render_template(
             'student_dashboard.html',
             events=events,
-            complaints=complaints,
             attendance=attendance
         )
     return redirect(url_for('login'))
@@ -171,6 +170,75 @@ def admin_dashboard():
             events=events
         )
     return redirect(url_for('login'))
+
+@app.route('/past-events')
+@login_required
+def past_events():
+    if current_user.role == 'student' or current_user.role == 'admin':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM events WHERE event_date < CURDATE()")  # Fetch past events
+        past_events = cursor.fetchall()
+        cursor.close()
+
+        return render_template('past_events.html', events=past_events)
+    return redirect(url_for('login'))
+
+@app.route('/view-complaints')
+@login_required
+def view_complaints():
+    if current_user.role == 'student':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM complaints WHERE student_id = %s", (current_user.id,))
+        complaints = cursor.fetchall()
+        cursor.close()
+        return render_template('complaints.html', complaints=complaints)
+    elif current_user.role == 'admin':
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT * FROM complaints")
+        complaints = cursor.fetchall()
+        cursor.close()
+        return render_template('complaints.html', complaints=complaints)
+    return redirect(url_for('login'))
+
+@app.route('/profile')
+@login_required
+def profile():
+    if current_user.role == 'student':
+        # Fetch student details from the database
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            SELECT userid, name, email, branch, sem, sec 
+            FROM student 
+            WHERE userid = %s
+        """, (current_user.id,))
+        student_data = cursor.fetchone()
+        cursor.close()
+
+        # Ensure data exists for the current user
+        if not student_data:
+            return render_template("error.html", error="Profile not found")
+
+        # Pass the data to the template
+        return render_template('student_profile.html', student=student_data)
+    elif current_user.role == 'admin':
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            SELECT userid, name, email,
+            FROM admin 
+            WHERE userid = %s
+        """, (current_user.id,))
+        admin_data = cursor.fetchone()
+        cursor.close()
+
+        # Ensure data exists for the current user
+        if not admin_data:
+            return render_template("error.html", error="Profile not found")
+
+        # Pass the data to the template
+        return render_template('admin_profile.html', admin=admin_data)
+
+    return redirect(url_for('login'))
+
 
 @app.route('/logout')
 @login_required
