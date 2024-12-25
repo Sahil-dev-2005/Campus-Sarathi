@@ -218,13 +218,20 @@ def profile():
         # Ensure data exists for the current user
         if not student_data:
             return render_template("error.html", error="Profile not found")
-
+        student = {
+            'userid':student_data[0],
+            'name':student_data[1],
+            'email':student_data[2],
+            'branch':student_data[3],
+            'sem':student_data[4],
+            'sec':student_data[5]
+        }
         # Pass the data to the template
-        return render_template('student_profile.html', student=student_data)
+        return render_template('student_profile.html', student=student)
     elif current_user.role == 'admin':
         cursor = mysql.connection.cursor()
         cursor.execute("""
-            SELECT userid, name, email,
+            SELECT userid, name, email
             FROM admin 
             WHERE userid = %s
         """, (current_user.id,))
@@ -234,9 +241,15 @@ def profile():
         # Ensure data exists for the current user
         if not admin_data:
             return render_template("error.html", error="Profile not found")
+        
+        admin = {
+            'userid': admin_data[0],
+            'name': admin_data[1],
+            'email': admin_data[2],
+        }
 
         # Pass the data to the template
-        return render_template('admin_profile.html', admin=admin_data)
+        return render_template('admin_profile.html', admin=admin)
 
     return redirect(url_for('login'))
 
